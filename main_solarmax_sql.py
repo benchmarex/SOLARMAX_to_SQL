@@ -40,8 +40,6 @@ import json
 import sys
 import datetime
 import pymysql
-import os
-import time
 import socket
 
 def get_time():
@@ -106,7 +104,7 @@ with open('C:\\Users\\Marek\\PycharmProjects\\pythonProject\\config13.json') as 
 SOLARMAX_INVERTER_HOST = jsonObject['SOLARMAX_INVERTER_HOST']
 SOLARMAX_INVERTER_PORT = jsonObject['SOLARMAX_INVERTER_PORT']
 
-'''
+
 resp = str(ping(SOLARMAX_INVERTER_HOST))
 resp = resp.find("Request timed out")
 
@@ -135,11 +133,14 @@ response = sock.recv(1024)
 
 # close connection
 sock.close()
-'''
+
 
 #response = b'{7B;FB;CC|64:UDC=93D;IDC=165;PDC=69C;UL1=982;IL1=146;PAC=622;TNF=1386;TKK=1E;KHR=2F07;KDY=37;KLD=4D;KMT=1B;KYR=1F;KT0=21CA;PIN=19C8;SWV=F;PAM=157C;IAM=4;IEA=1D;IED=11;UGD=750;DIN=3E2FA;LAN=1;CAC=AB0|31C9}'
 #inverter adress 0x7b (123)
-response = b'{7B;FB;C9|64:UDC=970;IDC=6F;PDC=218;UL1=960;IL1=67;PAC=1D4;TNF=1385;TKK=17;KHR=2F08;KDY=3D;KLD=4D;KMT=1B;KYR=20;KT0=21CB;PIN=19C8;SWV=F;PAM=157C;IAM=3;IEA=1D;IED=B;UGD=728;DIN=3E2FA;LAN=1;CAC=AB0|3124}'
+
+
+#response = b'{7B;FB;C9|64:UDC=970;IDC=6F;PDC=218;UL1=960;IL1=67;PAC=1D4;TNF=1385;TKK=17;KHR=2F08;KDY=3D;KLD=4D;KMT=1B;KYR=20;KT0=21CB;PIN=19C8;SWV=F;PAM=157C;IAM=3;IEA=1D;IED=B;UGD=728;DIN=3E2FA;LAN=1;CAC=AB0|3124}'
+
 
 #response = b'{7B;FB;C9|64:UDC=970;IDC=6F;PDC=218;UL1=960;IL1=67;PAC=1D4;TNF=1385;TKK=17;KHR=2F08;KDY=3D;KLD=4D;KMT=1B;KYR=20;KT0=21CB;PIN=19C8;SWV=F;PAM=157C;IAM=3;IEA=1D;IED=B;UGD=728;DIN=3E2FA;LAN=1;CAC=AB0|3124}'
 resp_ = str(response)
@@ -208,6 +209,8 @@ print(f"Voltage DC2 = {DC_V2} V, Current DC2 = {DC_V2_CURRENT} A, {DC_V2_POWER} 
 DataMysql = get_time()
 print(DataMysql)
 
+#INSERT INTO `Solarmax`(`date`, `Energy`) VALUES ('23-02-01 12:00:00', '3.9')
+
 sql = f"""INSERT INTO Solarmax (date, Energy, Power_AC, Inverter_temperature, Voltage_AC1, Voltage_AC2, Voltage_AC3,\n
  Current_AC1, Current_AC2, Current_AC3, Power_DC1, Power_DC2, Voltage_DC1, Voltage_DC2, Current_DC1, Current_DC2, \n
  Ac_freq, Module_temperature, Insulation_imp_cath_gnd, Insulation_imp_PV1, Insulation_imp_PV2, AC_reactive_power, AC_Today_Generation_Time) VALUES\n
@@ -219,6 +222,8 @@ sql = f"""INSERT INTO Solarmax (date, Energy, Power_AC, Inverter_temperature, Vo
 
 
 print(sql)
+
+
 
 SQL_HOST = jsonObject["SQL_HOST"]
 SQL_USER = jsonObject["SQL_USER"]

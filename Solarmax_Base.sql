@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Czas generowania: 25 Lut 2023, 23:29
+-- Czas generowania: 30 Mar 2023, 22:19
 -- Wersja serwera: 10.5.15-MariaDB-0+deb11u1
 -- Wersja PHP: 7.4.33
 
@@ -50,7 +50,9 @@ CREATE TABLE `Solarmax` (
   `Module_temperature` float DEFAULT NULL COMMENT '°C',
   `Insulation_imp_cath_gnd` float DEFAULT NULL COMMENT 'kΩ',
   `Insulation_imp_PV1` float DEFAULT NULL COMMENT 'kΩ',
-  `Insulation_imp_PV2` float DEFAULT NULL COMMENT 'kΩ'
+  `Insulation_imp_PV2` float DEFAULT NULL COMMENT 'kΩ',
+  `AC_reactive_power` float DEFAULT NULL COMMENT 'VAR',
+  `AC_Today_Generation_Time` int(4) DEFAULT NULL COMMENT 'minutes'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
