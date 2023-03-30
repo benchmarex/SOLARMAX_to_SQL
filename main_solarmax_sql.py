@@ -50,7 +50,7 @@ def get_time():
 
     now = datetime.datetime.now()
     pm_solartime = now.strftime("%Y-%m-%d %H:%M:%S")
-    return (pm_solartime)
+    return (pm_solartime)       # '2022-11-04 22:21:36'
 
 def find_cmd_value(cmd):
 
@@ -118,8 +118,6 @@ else:
         print(SOLARMAX_INVERTER_HOST, 'Host is unreachable')
         sys.exit()
 
-
-
 # socket and connection make
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -141,6 +139,7 @@ sock.close()
 '''
 
 #response = b'{7B;FB;CC|64:UDC=93D;IDC=165;PDC=69C;UL1=982;IL1=146;PAC=622;TNF=1386;TKK=1E;KHR=2F07;KDY=37;KLD=4D;KMT=1B;KYR=1F;KT0=21CA;PIN=19C8;SWV=F;PAM=157C;IAM=4;IEA=1D;IED=11;UGD=750;DIN=3E2FA;LAN=1;CAC=AB0|31C9}'
+#inverter adress 0x7b (123)
 response = b'{7B;FB;C9|64:UDC=970;IDC=6F;PDC=218;UL1=960;IL1=67;PAC=1D4;TNF=1385;TKK=17;KHR=2F08;KDY=3D;KLD=4D;KMT=1B;KYR=20;KT0=21CB;PIN=19C8;SWV=F;PAM=157C;IAM=3;IEA=1D;IED=B;UGD=728;DIN=3E2FA;LAN=1;CAC=AB0|3124}'
 
 #response = b'{7B;FB;C9|64:UDC=970;IDC=6F;PDC=218;UL1=960;IL1=67;PAC=1D4;TNF=1385;TKK=17;KHR=2F08;KDY=3D;KLD=4D;KMT=1B;KYR=20;KT0=21CB;PIN=19C8;SWV=F;PAM=157C;IAM=3;IEA=1D;IED=B;UGD=728;DIN=3E2FA;LAN=1;CAC=AB0|3124}'
@@ -201,24 +200,11 @@ print("\n")
 
 
 
-'''
-
-
-
-
 ######SQL#####
 DataMysql = get_time()
 print(DataMysql)
 
-# '2022-11-04 22:21:36'
-
-# sql table making
-# CREATE TABLE Sofar_Base.`Sofar` (Id DOUBLE NOT NULL AUTO_INCREMENT, Date DATE NOT NULL , Time TIME NOT NULL , Energy FLOAT NOT NULL COMMENT 'kWh' , Power_AC FLOAT NOT NULL COMMENT 'kW' , Temperature FLOAT NOT NULL COMMENT 'C°' , Voltage_AC1 FLOAT NOT NULL COMMENT 'V', Voltage_AC2 FLOAT NOT NULL COMMENT 'V' , Voltage_AC3 FLOAT NOT NULL COMMENT 'V', Current_AC1 FLOAT NOT NULL COMMENT 'A' , Current_AC2 FLOAT NOT NULL COMMENT 'A', Current_AC3 FLOAT NOT NULL COMMENT 'A', Power_DC1 FLOAT NOT NULL COMMENT 'W', Power_DC2 FLOAT NOT NULL COMMENT 'W', Voltage_DC1 FLOAT NOT NULL COMMENT 'V' , Voltage_DC2 FLOAT NOT NULL COMMENT 'V' , Current_DC1 FLOAT NOT NULL COMMENT 'A' , Current_DC2 FLOAT NOT NULL COMMENT 'A',PRIMARY KEY (Id) ) ENGINE = InnoDB;
-
-# INSERT INTO `Sofar`(`date`, `Energy`) VALUES ('23-02-01 12:00:00', '3.9')
-
-
-sql = f"""INSERT INTO Sofar (date, Energy, Power_AC, Inverter_temperature, Voltage_AC1, Voltage_AC2, Voltage_AC3,\n
+sql = f"""INSERT INTO Solarmax (date, Energy, Power_AC, Inverter_temperature, Voltage_AC1, Voltage_AC2, Voltage_AC3,\n
  Current_AC1, Current_AC2, Current_AC3, Power_DC1, Power_DC2, Voltage_DC1, Voltage_DC2, Current_DC1, Current_DC2, \n
  Ac_freq, Module_temperature, Insulation_imp_cath_gnd, Insulation_imp_PV1, Insulation_imp_PV2, AC_reactive_power, AC_Today_Generation_Time) VALUES\n
 
@@ -261,5 +247,5 @@ except:
 
 # disconnect from server
 db.close()
-'''
+
 
