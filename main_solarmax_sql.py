@@ -41,7 +41,6 @@ import sys
 import datetime
 import pymysql
 import os
-import socket
 import time
 import socket
 
@@ -149,16 +148,22 @@ print(resp_)
 ###############___AC GRID___##############
 
 AC_V1 = find_cmd_value('UL1')/10
+AC_V2 = 0
+AC_V3 = 0
 AC_V1_CURRENT = find_cmd_value('IDC')/100
+AC_V2_CURRENT = 0
+AC_V3_CURRENT = 0
 AC_V1_3_ACTIVE_POWER = find_cmd_value('PAC')/2
-#AC_V1_3_REACTIVE_POWER = data_converter(response_modbus[0x0d])*10
+AC_V1_3_REACTIVE_POWER = 0
 AC_V1_3_FREQ = find_cmd_value('TNF')/100
 AC_Today_Production = find_cmd_value('KDY')/10
 AC_Today_Generation_Time = find_cmd_value('TNP')/10
 
 print(f"\nVoltage AC1 = {AC_V1} V, Current AC1 = {AC_V1_CURRENT} A\n")
+print(f"Voltage AC2 = {AC_V2} V, Current AC2 = {AC_V2_CURRENT} A\n")
+print(f"Voltage AC3 = {AC_V3} V, Current AC3 = {AC_V3_CURRENT} A\n")
 print(f"Active Power AC1_3 = {AC_V1_3_ACTIVE_POWER} W\n")
-#print(f"Reactive Power AC1_3 = {AC_V1_3_REACTIVE_POWER}VAR\n")
+print(f"Reactive Power AC1_3 = {AC_V1_3_REACTIVE_POWER}VAR\n")
 print(f"AC_V1_3_Frequency = {AC_V1_3_FREQ} Hz\n")
 print(f"Today_Production = {AC_Today_Production} kWh\n")
 print(f"AC_Today_Generation_Time = {AC_Today_Generation_Time} h\n")
@@ -177,23 +182,22 @@ print(f"Inverter temperature {TEMP_INVERTER}°C Inverter module temperature {TEM
 
 
 DC_V1 = find_cmd_value('UDC')/10
-#DC_V2 = find_cmd_value('UD02')/10
-
+DC_V2 = 0
 DC_V1_CURRENT = find_cmd_value('IDC')/10
-#DC_V2_CURRENT = response_modbus[0x09]/100
+DC_V2_CURRENT = 0
 
 DC_V1_POWER = find_cmd_value('PDC')/10
-#DC_V2_POWER = response_modbus[0x0b]*10
+DC_V2_POWER = 0
 
 
-#DC_V1_INSULATION_TO_GND = response_modbus[0x24]
-#DC_V2_INSULATION_TO_GND = response_modbus[0x25]
+DC_V1_INSULATION_TO_GND = 0
+DC_V2_INSULATION_TO_GND = 0
 
-#DC_V_INSULATION_TO_GND = response_modbus[0x26]
+DC_V_INSULATION_TO_GND = 0
 
-print(f"Voltage DC1 = {DC_V1} V, Current DC1 = {DC_V1_CURRENT} A, {DC_V1_POWER} W")
-#print(f"Voltage DC2 = {DC_V2} V, Current DC2 = {DC_V2_CURRENT} A, {DC_V2_POWER} W")
-print("\n")
+print(f"Voltage DC1 = {DC_V1} V, Current DC1 = {DC_V1_CURRENT} A, {DC_V1_POWER} W\n")
+print(f"Voltage DC2 = {DC_V2} V, Current DC2 = {DC_V2_CURRENT} A, {DC_V2_POWER} W\n")
+
 
 
 ###############___DC ___#################
@@ -239,7 +243,7 @@ try:
     cursor.execute(sql)
 
     # Commit your changes in the database
- #   db.commit()
+    db.commit()
 
 except:
     # Rollback in case there is any error
