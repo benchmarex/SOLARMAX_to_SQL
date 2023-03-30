@@ -1,0 +1,9 @@
+{
+  	  "SQL_HOST": "192.168.5.140",
+	  "SQL_USER": "someuser",
+	  "SQL_PASSWORD": "passsw",
+	  "SQL_DATABASE": "Some_Base",
+
+	  "SOLARMAX_INVERTER_HOST": "192.168.5.250",
+      "SOLARMAX_INVERTER_PORT": 12345
+}
