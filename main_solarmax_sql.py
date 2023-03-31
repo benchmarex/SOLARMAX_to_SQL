@@ -52,10 +52,19 @@ def get_time():
 def find_cmd_value(cmd):
 
     result = ['0', '0', '0', '0']
+    i = k = resp_.find(cmd)+5
+
+    # 1 bytes example IDC=F;
+ #   temp=resp_[k]
+    if resp_[k] == ';':
+        k = k - 1  # if 1 char hex
+        result[3] = resp_[k]
+
+    k = i + 1
 
     # 2 bytes example IDC=6F;
-    i = k = resp_.find(cmd)+6
 
+  #  temp = resp_[k]
     if resp_[k] == ';':
         k = k - 2   #if 2 char hex
         result[2] = resp_[k]
@@ -64,8 +73,8 @@ def find_cmd_value(cmd):
 
     # 3 bytes example PAC=1D4;
 
-    k = i + 1
-
+    k = i + 2
+  #  temp = resp_[k]
     if resp_[k] == ';':
         k = k - 3  # if 3 char hex
         result[1] = resp_[k]
@@ -74,10 +83,10 @@ def find_cmd_value(cmd):
         k = k + 1
         result[3] = resp_[k]
 
-    k = i + 2
+    k = i + 3
 
     #4 bytes  example TNF=1385;
-
+  #  temp = resp_[k]
     if resp_[k] == ';':
         k = k - 4  # if 3 char hex
         result[0] = resp_[k]
@@ -143,10 +152,15 @@ sock.close()
 
 
 #response = b'{7B;FB;C9|64:UDC=970;IDC=6F;PDC=218;UL1=960;IL1=67;PAC=1D4;TNF=1385;TKK=17;KHR=2F08;KDY=3D;KLD=4D;KMT=1B;KYR=20;KT0=21CB;PIN=19C8;SWV=F;PAM=157C;IAM=3;IEA=1D;IED=B;UGD=728;DIN=3E2FA;LAN=1;CAC=AB0|3124}'
+
+#response = b'{7B;FB;C8|64:UDC=8ED;IDC=67;PDC=1D8;UL1=96A;IL1=5F;PAC=19E;TNF=138B;TKK=14;KHR=2F16;KDY=4;KLD=42;KMT=22;KYR=27;KT0=21D2;PIN=19C8;SWV=F;PAM=157C;IAM=0;IEA=1F;IED=2;UGD=72D;DIN=3E2FA;LAN=1;CAC=AB3|3107}'
+
+
 resp_ = str(response)
 print(resp_)
 
 ###############___AC GRID___##############
+
 
 AC_V1 = find_cmd_value('UL1')/10
 AC_V2 = 0
@@ -172,7 +186,7 @@ print(f"AC_Today_Generation_Time = {AC_Today_Generation_Time} h\n")
 
 ###############___Temperature___#################
 
-TEMP_INVERTER = find_cmd_value('TKK')/10
+TEMP_INVERTER = find_cmd_value('TKK')
 TEMP_INVERTER_MODULE = find_cmd_value('TK2')/10
 
 print(f"Inverter temperature {TEMP_INVERTER}°C Inverter module temperature {TEMP_INVERTER_MODULE}°C\n")
@@ -184,10 +198,10 @@ print(f"Inverter temperature {TEMP_INVERTER}°C Inverter module temperature {TEM
 
 DC_V1 = find_cmd_value('UDC')/10
 DC_V2 = 0
-DC_V1_CURRENT = find_cmd_value('IDC')/10
+DC_V1_CURRENT = find_cmd_value('IDC')/100
 DC_V2_CURRENT = 0
 
-DC_V1_POWER = find_cmd_value('PDC')/10
+DC_V1_POWER = find_cmd_value('PDC')/2
 DC_V2_POWER = 0
 
 
