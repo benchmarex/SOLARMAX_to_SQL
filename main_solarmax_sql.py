@@ -127,9 +127,6 @@ def checksum16(msg):
 ###########___start program___#################
 
 
-request = 'FB;01;1E|64:KDY;KT0;PAC|'
-
-print(checksum16(request))
 
 
 #with open('config13.json') as jsonFile:
@@ -160,7 +157,16 @@ sock.connect((SOLARMAX_INVERTER_HOST, SOLARMAX_INVERTER_PORT))
 
 # request to inverter
 
+
+
+
 request=b'{FB;7B;8E|64:TK2;UDC;IDC;PDC;UL1;IL1;PAC;TNF;TKK;KHR;KDY;KLD;KMT;KYR;KT0;PIN;SWV;TNP;PAM;SCD;SE1;SE2;IAM;IEA;IED;UGD;SPC;SPR;DIN;LAN;CAC|2539}'
+
+#print(request)
+#crc_16=checksum16(request)
+
+#request = 'FB;01;1E|64:KDY;KT0;PAC|'
+#print(checksum16(request))
 
 
 sock.send(request)
