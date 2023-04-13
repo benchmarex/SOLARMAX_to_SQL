@@ -210,12 +210,12 @@ print(resp_)
 ###############___AC GRID___##############
 
 
-AC_V1 = find_cmd_value('UL1')/10
+AC_V1 = 0
 AC_V2 = 0
-AC_V3 = 0
-AC_V1_CURRENT = find_cmd_value('IDC')/100
+AC_V3 = find_cmd_value('UL1')/10
+AC_V1_CURRENT = 0
 AC_V2_CURRENT = 0
-AC_V3_CURRENT = 0
+AC_V3_CURRENT = find_cmd_value('IDC')/100
 AC_V1_3_ACTIVE_POWER = find_cmd_value('PAC')/2
 AC_V1_3_REACTIVE_POWER = 0
 AC_V1_3_FREQ = find_cmd_value('TNF')/100
