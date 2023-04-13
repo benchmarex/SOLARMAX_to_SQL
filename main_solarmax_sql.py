@@ -157,7 +157,7 @@ sock.connect((SOLARMAX_INVERTER_HOST, SOLARMAX_INVERTER_PORT))
 
 # request to inverter
 
-request=b'{FB;7B;ll|64:TK2;UDC;IDC;PDC;UL1;IL1;PAC;TNF;TKK;KHR;KDY;KLD;KMT;KYR;KT0;PIN;SWV;TNP;PAM;SCD;SE1;SE2;IAM;IEA;IED;UGD;SPC;SPR;DIN;LAN;CAC|xxxx}'
+request=b'{FB;7B;ll|64:TK2;UDC;IDC;PDC;UL1;IL1;PAC;TNF;TKK;KHR;KDY;KLD;KMT;KYR;KT0;PIN;SWV;TNP;PAM;SCD;SE1;SE2;IAM;IED;UGD;SPC;SPR;DIN;LAN;CAC|xxxx}'
 #request=b'{FB;7B;8E|64:TK2;UDC;IDC;PDC;UL1;IL1;PAC;TNF;TKK;KHR;KDY;KLD;KMT;KYR;KT0;PIN;SWV;TNP;PAM;SCD;SE1;SE2;IAM;IEA;IED;UGD;SPC;SPR;DIN;LAN;CAC|2539}'
 
 request1=request
@@ -165,13 +165,13 @@ request1=request
 lenreq1=len(request)  #lengh all request
 lenreq1 = hex(lenreq1)  # change fo hex
 without_prefix = lenreq1[2:]
-lenreq1 = '{:0>2}'.format(without_prefix.lstrip('0'))
+lenreq1 = '{:0>2}'.format(without_prefix.lstrip('0')).upper()
 request=str(request)
 request=request.replace("ll", str(lenreq1))
 request1 = request.encode()
 request1=request1[3:-6].decode()    #formating for crc16 calculation
 
-crc_16=checksum16(str(request1))
+crc_16=(checksum16(str(request1))).upper()
 
 request=request.replace("xxxx", str(crc_16))
 
