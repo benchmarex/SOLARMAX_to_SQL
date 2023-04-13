@@ -104,11 +104,40 @@ def find_cmd_value(cmd):
     return result
 
 
+def checksum16(msg):
+    # calculates the checksum 16 of the given string argument
+    bytes = bytearray(msg, 'utf-8')
+    sum = 0
+    for b in bytes:
+        sum += b
+        sum = sum % pow(2, 16)
+
+       # ascii_string = chr(b)[0]
+       # print(ascii_string)
+
+
+
+    sum=hex(sum)
+    #0x672
+    without_prefix = sum[2:]
+    sum = '{:0>4}'.format(without_prefix.lstrip('0'))
+
+    return sum
+
 ###########___start program___#################
 
 
-with open('C:\\Users\\Marek\\PycharmProjects\\pythonProject\\config13.json') as jsonFile:
-    jsonObject = json.load(jsonFile)
+request = 'FB;01;1E|64:KDY;KT0;PAC|'
+
+print(checksum16(request))
+
+
+#with open('config13.json') as jsonFile:
+#    jsonObject = json.load(jsonFile)
+
+with open('D:\\!dane\\!programowanie\\!pycharm2023\\PycharmProjects\\config13.json') as jsonFile:
+        jsonObject = json.load(jsonFile)
+
 
 SOLARMAX_INVERTER_HOST = jsonObject['SOLARMAX_INVERTER_HOST']
 SOLARMAX_INVERTER_PORT = jsonObject['SOLARMAX_INVERTER_PORT']
