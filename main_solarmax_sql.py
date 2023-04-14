@@ -126,9 +126,6 @@ def checksum16(msg):
 
 ###########___start program___#################
 
-
-
-
 #with open('config13.json') as jsonFile:
 #    jsonObject = json.load(jsonFile)
 
@@ -157,21 +154,21 @@ sock.connect((SOLARMAX_INVERTER_HOST, SOLARMAX_INVERTER_PORT))
 
 # request to inverter
 
-request=b'{FB;7B;ll|64:TK2;UDC;IDC;PDC;UL1;IL1;PAC;TNF;TKK;KHR;KDY;KLD;KMT;KYR;KT0;PIN;SWV;TNP;PAM;SCD;SE1;SE2;IAM;IED;UGD;SPC;SPR;DIN;LAN;CAC|xxxx}'
+request=b'{FB;05;ll|64:TK2;UDC;IDC;PDC;UL1;IL1;PAC;TNF;TKK;KHR;KDY;KLD;KMT;KYR;KT0;PIN;TNP;PAM;SCD;SE1;SE2;IAM;IED;UGD;SPC;SPR;DIN;LAN;CAC|xxxx}'
 #request=b'{FB;7B;8E|64:TK2;UDC;IDC;PDC;UL1;IL1;PAC;TNF;TKK;KHR;KDY;KLD;KMT;KYR;KT0;PIN;SWV;TNP;PAM;SCD;SE1;SE2;IAM;IEA;IED;UGD;SPC;SPR;DIN;LAN;CAC|2539}'
 
-request1=request
+request1 = request
 
-lenreq1=len(request)  #lengh all request
+lenreq1 = len(request)  #lengh all request
 lenreq1 = hex(lenreq1)  # change fo hex
 without_prefix = lenreq1[2:]
 lenreq1 = '{:0>2}'.format(without_prefix.lstrip('0')).upper()
-request=str(request)
-request=request.replace("ll", str(lenreq1))
+request = str(request)
+request = request.replace("ll", str(lenreq1))
 request1 = request.encode()
-request1=request1[3:-6].decode()    #formating for crc16 calculation
+request1 = request1[3:-6].decode()    #formating for crc16 calculation
 
-crc_16=(checksum16(str(request1))).upper()
+crc_16 = (checksum16(str(request1))).upper()
 
 request=request.replace("xxxx", str(crc_16))
 
@@ -217,7 +214,7 @@ AC_V1_CURRENT = 0
 AC_V2_CURRENT = 0
 AC_V3_CURRENT = find_cmd_value('IDC')/100
 AC_V1_3_ACTIVE_POWER = find_cmd_value('PAC')/2
-AC_V1_3_REACTIVE_POWER = 0
+AC_V1_3_REACTIVE_POWER = AC_V1_3_ACTIVE_POWER*(find_cmd_value('PRL')/100)-AC_V1_3_ACTIVE_POWER  #(something wrong PRL always is 123%)
 AC_V1_3_FREQ = find_cmd_value('TNF')/100
 AC_Today_Production = find_cmd_value('KDY')/10
 AC_Today_Generation_Time = find_cmd_value('TNP')/10
@@ -310,7 +307,7 @@ try:
     cursor.execute(sql)
 
     # Commit your changes in the database
-    db.commit()
+#    db.commit()
 
 except:
     # Rollback in case there is any error
