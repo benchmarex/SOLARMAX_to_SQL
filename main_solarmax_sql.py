@@ -154,7 +154,7 @@ sock.connect((SOLARMAX_INVERTER_HOST, SOLARMAX_INVERTER_PORT))
 
 # request to inverter
 
-request=b'{FB;05;ll|64:TK2;UDC;IDC;PDC;UL1;IL1;PAC;TNF;TKK;KHR;KDY;KLD;KMT;KYR;KT0;PIN;TNP;PAM;SCD;SE1;SE2;IAM;IED;UGD;SPC;SPR;DIN;LAN;CAC|xxxx}'
+request=b'{FB;05;ll|64:UDC;IDC;PDC;UL1;IL1;PAC;TNF;TKK;KHR;KDY;IED;UGD;UGD|xxxx}'    #last parameter is wrodng decode then must ask 2 times or find bug:)
 #request=b'{FB;7B;8E|64:TK2;UDC;IDC;PDC;UL1;IL1;PAC;TNF;TKK;KHR;KDY;KLD;KMT;KYR;KT0;PIN;SWV;TNP;PAM;SCD;SE1;SE2;IAM;IEA;IED;UGD;SPC;SPR;DIN;LAN;CAC|2539}'
 
 request1 = request
@@ -173,7 +173,7 @@ crc_16 = (checksum16(str(request1))).upper()
 request=request.replace("xxxx", str(crc_16))
 
 print(f"CRC = {crc_16}h \n\n")
-#request = 'FB;7B;8E|64:TK2;UDC;IDC;PDC;UL1;IL1;PAC;TNF;TKK;KHR;KDY;KLD;KMT;KYR;KT0;PIN;SWV;TNP;PAM;SCD;SE1;SE2;IAM;IEA;IED;UGD;SPC;SPR;DIN;LAN;CAC|
+#request = 'FB;7B;8E|64:TK2;UDC;IDC;PDC;UL1;IL1;PAC;TNF;TKK;KHR;KDY;KT0;PIN;SWV;TNP;PAM;SCD;SE1;SE2;IAM;IEA;IED;UGD;SPC;SPR;DIN;LAN;CAC|
 # this is what crc counting
 
 
@@ -214,10 +214,10 @@ AC_V1_CURRENT = 0
 AC_V2_CURRENT = 0
 AC_V3_CURRENT = find_cmd_value('IDC')/100
 AC_V1_3_ACTIVE_POWER = find_cmd_value('PAC')/2
-AC_V1_3_REACTIVE_POWER = AC_V1_3_ACTIVE_POWER*(find_cmd_value('PRL')/100)-AC_V1_3_ACTIVE_POWER  #(something wrong PRL always is 123%)
+AC_V1_3_REACTIVE_POWER = round(((1-(100-find_cmd_value('PRL'))/100)*AC_V1_3_ACTIVE_POWER),1)   #PRL is percentage value reactive power
 AC_V1_3_FREQ = find_cmd_value('TNF')/100
 AC_Today_Production = find_cmd_value('KDY')/10
-AC_Today_Generation_Time = find_cmd_value('TNP')/10
+AC_Today_Generation_Time = find_cmd_value('KHR')
 
 print(f"\nVoltage AC1 = {AC_V1} V, Current AC1 = {AC_V1_CURRENT} A\n")
 print(f"Voltage AC2 = {AC_V2} V, Current AC2 = {AC_V2_CURRENT} A\n")
@@ -232,7 +232,7 @@ print(f"AC_Today_Generation_Time = {AC_Today_Generation_Time} h\n")
 ###############___Temperature___#################
 
 TEMP_INVERTER = find_cmd_value('TKK')
-TEMP_INVERTER_MODULE = find_cmd_value('TK2')/10
+TEMP_INVERTER_MODULE = 0 #find_cmd_value('TK2')/10
 
 print(f"Inverter temperature {TEMP_INVERTER}°C Inverter module temperature {TEMP_INVERTER_MODULE}°C\n")
 
@@ -242,7 +242,7 @@ print(f"Inverter temperature {TEMP_INVERTER}°C Inverter module temperature {TEM
 
 
 DC_V1 = find_cmd_value('UDC')/10
-DC_V2 = 0
+DC_V2 = find_cmd_value('UGD')/10
 DC_V1_CURRENT = find_cmd_value('IDC')/100
 DC_V2_CURRENT = 0
 
@@ -253,12 +253,12 @@ DC_V2_POWER = 0
 DC_V1_INSULATION_TO_GND = 0
 DC_V2_INSULATION_TO_GND = 0
 
-DC_V_INSULATION_TO_GND = 0
+DC_V_INSULATION_TO_GND = round((DC_V1/((find_cmd_value('IED')+1e-16)/1e3)/1e6),2)
 
 print(f"Voltage DC1 = {DC_V1} V, Current DC1 = {DC_V1_CURRENT} A, {DC_V1_POWER} W\n")
 print(f"Voltage DC2 = {DC_V2} V, Current DC2 = {DC_V2_CURRENT} A, {DC_V2_POWER} W\n")
 
-
+print(f"DC_V_INSULATION_TO_GND = {DC_V_INSULATION_TO_GND} Mohm\n")
 
 ###############___DC ___#################
 
