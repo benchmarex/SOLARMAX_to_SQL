@@ -307,7 +307,7 @@ try:
     cursor.execute(sql)
 
     # Commit your changes in the database
-#    db.commit()
+    db.commit()
 
 except:
     # Rollback in case there is any error
